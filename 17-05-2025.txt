@@ -1,0 +1,36 @@
+SHOW DATABASES;
+
+CREATE DATABASE vit;
+
+SHOW TABLES FROM vit;
+
+USE vit;
+
+CREATE TABLE CSE (
+    sid INT,
+    sName VARCHAR(30),
+    sMarks INT
+);
+
+SELECT * FROM CSE;
+
+ALTER TABLE CSE DROP COLUMN S_Grade;
+
+ALTER TABLE CSE ADD S_Grade CHAR(1);
+
+INSERT INTO CSE (sid, sName, sMarks, S_Grade) VALUES
+(1, 'DARA', 99, 'S'), 
+(2, 'VAMSI', 99, 'S'),
+(3, 'Harry', 100, 'S'),
+(4, 'Potter', 100, 'S'),
+(5, 'Ginny', 97, 'A'),
+(6, 'Hermione', 100, 'S'),
+(7, 'Wheasly', 98, 'A'),
+(8, 'Ron', 99, 'A'),
+(9, 'Albus', 99, 'A');
+
+UPDATE cse SET sMarks=100 WHERE sid=1;
+update cse set smarks=smarks+50;
+alter table cse add(
+S_Country varchar(100) default "INDIA"
+);
