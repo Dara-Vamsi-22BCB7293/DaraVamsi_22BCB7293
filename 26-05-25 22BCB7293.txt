@@ -1,0 +1,111 @@
+package crud_operation;
+import java.sql.*;
+import java.sql.PreparedStatement;
+import java.util.*;
+import java.sql.Connection;
+
+public class CRUD_Operation {
+
+	public static void main(String[] args) {
+
+		Scanner scanner = new Scanner(System.in);
+		CRUD_Operation objTest = new CRUD_Operation();
+
+		objTest.read_data();
+		objTest.update_data("8","8", "Ron",99);
+		objTest.delete_data(5);
+		System.out.print("Enter number of students to insert: ");
+		int n = scanner.nextInt();
+		scanner.nextLine();
+		
+		for (int i = 0; i < n; i++) {
+			System.out.println("\nEnter details for student " + (i + 1) + ":");
+			
+			System.out.print("Enter Serial No: ");
+			String sl_no = scanner.nextLine();
+			
+			System.out.print("Enter Name: ");
+			String name = scanner.nextLine();
+			
+			System.out.print("Enter Marks: ");
+			int marks = scanner.nextInt();
+			scanner.nextLine();
+
+			objTest.create_data(sl_no, name, marks);
+		}
+
+		scanner.close();
+	}
+
+	public void create_data(String sl_no, String name, int marks) {
+		DB_Connection obj_DB_Connection = new DB_Connection();
+		java.sql.Connection connection = obj_DB_Connection.get_connection();
+		PreparedStatement ps = null;
+		try {
+			ps = connection.prepareStatement("insert into student values (?,?,?)");
+			ps.setString(1, sl_no);
+			ps.setString(2, name);
+			ps.setInt(3, marks);
+			System.out.println(ps);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void read_data(){
+		DB_Connection obj_DB_Connection=new DB_Connection();
+		java.sql.Connection connection = obj_DB_Connection.get_connection();
+		PreparedStatement ps=null;
+		ResultSet rs=null;
+		try {
+			String query="select * from student where id=1";
+			ps=connection.prepareStatement(query);
+			System.out.println(ps);
+			rs=ps.executeQuery();
+			while(rs.next()){
+			System.out.println("Sl no -"+rs.getInt(1));
+			System.out.println("name -"+rs.getString(2));
+			System.out.println("Marks -"+rs.getInt(3));
+			System.out.println("---------------");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void update_data(String id, String new_id, String name, int marks) {
+	    DB_Connection obj_DB_Connection = new DB_Connection();
+	    Connection connection = obj_DB_Connection.get_connection();
+	    PreparedStatement ps = null;
+	    try {
+	        String query = "UPDATE student SET id = ?, name = ?, marks = ? WHERE id = ?";
+	        ps = connection.prepareStatement(query);
+	        ps.setString(1, new_id);
+	        ps.setString(2, name);
+	        ps.setInt(3, marks);
+	        ps.setString(4, id);
+	        System.out.println("Executing: " + ps);
+	        ps.executeUpdate();
+	        System.out.println("Update successful.");
+	    } catch (Exception e) {
+	        System.out.println("Error: " + e.getMessage());
+	    }
+	}
+
+	public void delete_data(int id){
+		DB_Connection obj_DB_Connection=new DB_Connection();
+		Connection connection=obj_DB_Connection.get_connection();
+		PreparedStatement ps=null;
+		try {
+			String query="delete from student where id=?";
+			ps=connection.prepareStatement(query);
+			ps.setInt(1, id);
+			System.out.println(ps);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+}
