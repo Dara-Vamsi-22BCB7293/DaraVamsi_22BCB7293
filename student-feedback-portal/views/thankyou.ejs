@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thank You</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    setTimeout(() => {
+      document.getElementById('edit-form').style.display = 'none';
+      document.getElementById('timeout').style.display   = 'block';
+    }, 5000);
+  </script>
+</head>
+<body>
+  <div class="form-container">
+    <h2>✅ Thank you for your feedback!</h2>
+
+    <div id="edit-form">
+      <h3>✏️ Edit Feedback (5 s window)</h3>
+      <form action="/edit/<%= feedback._id %>" method="POST">
+        <label>Name:</label>
+        <input  type="text"  name="name"       value="<%= feedback.name %>" required>
+        <label>Email:</label>
+        <input  type="email" name="email"      value="<%= feedback.email %>" required>
+        <label>Department:</label>
+        <input  type="text"  name="department" value="<%= feedback.department %>" required>
+        <label>Subject:</label>
+        <input  type="text"  name="subject"    value="<%= feedback.subject %>" required>
+        <label>Message:</label>
+        <textarea name="message" required><%= feedback.message %></textarea>
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+
+    <div id="timeout" style="display:none;">
+      <p>⏳ Edit window has closed.</p>
+    </div>
+
+    <a href="/" style="display:block; margin-top:20px;">Submit Another Feedback</a>
+  </div>
+</body>
+</html>

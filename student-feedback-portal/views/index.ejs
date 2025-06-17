@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Feedback Form</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Student Feedback Form</h2>
+    <form action="/submit" method="POST">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <label>Department:</label>
+      <input type="text" name="department" required>
+      <label>Subject:</label>
+      <input type="text" name="subject" required>
+      <label>Message:</label>
+      <textarea name="message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</body>
+</html>

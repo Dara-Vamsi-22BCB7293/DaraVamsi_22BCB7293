@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Feedback View</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>All Feedbacks</h2>
+
+    <% if (feedbacks.length === 0) { %>
+      <p>No feedback submitted yet.</p>
+    <% } else { %>
+      <% feedbacks.forEach(fb => { %>
+        <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
+          <strong>Name:</strong> <%= fb.name %><br>
+          <strong>Email:</strong> <%= fb.email %><br>
+          <strong>Department:</strong> <%= fb.department %><br>
+          <strong>Subject:</strong> <%= fb.subject %><br>
+          <strong>Message:</strong> <%= fb.message %><br>
+          <strong>Submitted:</strong>
+          <%= new Date(fb.createdAt).toLocaleString('en-IN', {
+                dateStyle: 'medium',
+                timeStyle: 'short',
+                hour12: true
+              }) %><br>
+
+          <form action="/delete/<%= fb._id %>" method="POST"
+                onsubmit="return confirm('Delete this feedback?');">
+            <button type="submit" style="margin-top:5px; background:#d9534f;">
+              Delete
+            </button>
+          </form>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</body>
+</html>
