@@ -1,0 +1,70 @@
+package Connection;
+import org.bson.Document;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
+
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+import com.mongodb.client.*;
+
+
+public class MongoDB {
+    public static void main(String[] args) {
+
+
+
+
+
+    MongoCollection<Document> collection= database.getCollection("products");
+      Document price = new Document("price", new Document("$gte", 700).append("$lte", 900));
+      FindIterable<Document> products = collection.find(price);
+      System.out.println(price);
+
+
+    int totalPrice = 0;
+      int count = 0 ;
+
+      for (Document doc : collection.find()) {
+          Integer price1 = doc.getInteger("price");
+          if (price1 != null) {
+              totalPrice += price1;
+              count ++ ;
+          }
+      }
+
+      System.out.println("Average Price: " + totalPrice/count);
+
+
+
+
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("vit");
+        MongoCollection<Document> salesCollection = database.getCollection("sales");
+
+        AggregateIterable<Document> result = salesCollection.aggregate(Arrays.asList(
+            new Document("$group", new Document("_id", "$item")
+                .append("count", new Document("$sum", 1))
+                .append("maxPrice", new Document("$max", "$price"))
+            ),
+            new Document("$project", new Document("_id", 0)
+                .append("item", "$_id")
+                .append("count", 1)
+                .append("maxPrice", 1)
+            )
+        ));
+
+        for (Document doc : result) {
+            System.out.println(doc.toJson());
+        }
+
+        mongoClient.close();
+    }
+}

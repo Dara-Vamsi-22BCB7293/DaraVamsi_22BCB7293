@@ -1,0 +1,109 @@
+package Connection;
+import org.bson.Document;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.*;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+
+public class MongoDB {
+   public static void main(String[] args) {
+      // Creating a Mongo client 
+      MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+      
+      MongoDatabase database=mongoClient.getDatabase("vit");
+      
+      MongoCollection<Document> collection= database.getCollection("products");
+   
+     
+   	collection.deleteOne(Filters.eq("item","Cappuccino"));
+   	collection.deleteMany(Filters.eq("item", "Cappuccino"));
+   	System.out.println("Document deleted.");
+   	System.out.println("Documents");
+      
+    FindIterable<Document> Documents=collection.find().limit(2);
+
+    	      
+    	FindIterable<Document> documents = collection.find();
+
+         for (Document document : documents) {
+         System. out.println (document);
+
+            }      
+ 
+
+
+          List<Document> documentList = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            documentList.add(doc);
+        }
+
+        Collections.sort(documentList, (doc1, doc2) -> {
+            Double price1 = doc1.getDouble("price");
+            Double price2 = doc2.getDouble("price");
+            return price2.compareTo(price1);
+        });
+
+        for (Document doc : documentList) {
+            System.out.println("Sorted Document: " + doc);
+        }
+
+   }
+}
+
+
+
+
+
+java based logic to sort
+
+
+
+
+// necessary java imports 
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SortAsc {
+
+    public static void main(String[] args) {
+
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("vit");
+
+        // Get the collection
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        // Retrieve the documents and store them in a list
+        List<Document> documentList = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            documentList.add(doc);
+        }
+
+        // Sort documents in descending order by pice
+
+        Collections.sort(documentList, (doc1, doc2) -> {
+            Double price1 = doc1.getDouble("price");
+            Double price2 = doc2.getDouble("price");
+            return price2.compareTo(price1); // Descending order
+          // for ascending order:  return price1.compareTo(price2); 
+
+        });
+
+        // Printing
+        for (Document doc : documentList) {
+            System.out.println("Sorted Document: " + doc);
+        }
+
+       
+    }
+}

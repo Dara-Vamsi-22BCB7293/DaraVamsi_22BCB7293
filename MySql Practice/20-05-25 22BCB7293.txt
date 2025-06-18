@@ -1,0 +1,28 @@
+use vit;
+create database Tuesday;
+use tuesday;
+drop table products;
+create table category(
+c_id int,
+c_name varchar(25),
+c_details varchar(25)
+);
+insert into category values (101,'electronics','elecejnjffn');
+insert into category values (102,'furnitures','furniturejnfe');
+
+select * from category;
+drop table product;
+create table products(
+p_id int primary key,
+p_name varchar(25),
+p_details varchar(35),
+c_id int,
+foreign key products(c_id) references category(c_id) on update cascade
+);
+
+delete from category where c_id =101;
+desc products;
+
+insert into products values (501,'samsung 23','8gb ram',101);
+select * from products;
+
